@@ -1,0 +1,14 @@
+{
+  "id": "lyrics-languages",
+  "name": "Lyrics Languages",
+  "version": "0.1.0-alpha.1",
+  "description": "Shows how lyrics in scripts many cannot read are pronounced (romaji and furigana, pinyin, Korean and other scripts in the Latin alphabet), and translates lyrics on request with a local model or your LLM.",
+  "author": "LinkFast S.A.",
+  "license": "AGPL-3.0-or-later",
+  "homepage": "https://github.com/linkfast/arcanist-lyrics-languages",
+  "minApiVersion": 1,
+  "assembly": "Arcanist.LyricsLanguages.dll",
+  "adminPage": {
+    "icon": "/ext/lyrics-languages/icon.svg"
+  }
+}

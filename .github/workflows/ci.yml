@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # The extension builds against Arcanist, checked out beside it as ../../Arcanist.
+      - uses: actions/checkout@v4
+        with:
+          path: ArcanistExtensions/lyrics-languages
+      - uses: actions/checkout@v4
+        with:
+          repository: linkfast/arcanist
+          ref: ${{ vars.ARCANIST_REF || 'main' }}
+          path: Arcanist
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: ArcanistExtensions/lyrics-languages/global.json
+      - name: Test
+        working-directory: ArcanistExtensions/lyrics-languages
+        run: dotnet test --project tests/Arcanist.LyricsLanguages.Tests --artifacts-path artifacts/build
+      - name: Package
+        working-directory: ArcanistExtensions/lyrics-languages
+        run: sh pack.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: ArcanistExtensions/lyrics-languages/artifacts/arcanist-lyrics-languages-*.zip*

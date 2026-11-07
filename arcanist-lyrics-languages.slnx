@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Arcanist.LyricsLanguages/Arcanist.LyricsLanguages.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Arcanist.LyricsLanguages.Tests/Arcanist.LyricsLanguages.Tests.csproj" />
+  </Folder>
+</Solution>

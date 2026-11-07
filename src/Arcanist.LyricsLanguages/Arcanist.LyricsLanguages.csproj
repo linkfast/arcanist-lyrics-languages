@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Arcanist.LyricsLanguages</RootNamespace>
+    <!-- Its packages beside it, as in the installed extension (the tests install the build). -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- The Japanese dictionary is downloaded when the extension is set up (Components.cs), not shipped in the package. -->
+    <MeCabUseDefaultDictionary>False</MeCabUseDefaultDictionary>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Provided by the server at run time, as for any extension. -->
+    <ProjectReference Include="$(ArcanistRoot)src\Arcanist.Extensibility\Arcanist.Extensibility.csproj" Private="false" ExcludeAssets="runtime;native;contentfiles;build" />
+    <ProjectReference Include="$(ArcanistRoot)src\Arcanist.Core\Arcanist.Core.csproj" Private="false" ExcludeAssets="runtime;native;contentfiles;build" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Japanese readings (LGPL-2.1, with the IPADIC dictionary downloaded at set-up). -->
+    <PackageReference Include="MeCab.DotNet" Version="1.2.0" />
+    <!-- Other scripts in the Latin alphabet, and Chinese in pinyin (Apache-2.0). -->
+    <PackageReference Include="ICU4N.Transliterator" Version="60.1.0-alpha.356" />
+    <!--
+      The local translation model. Only the managed part ships: ONNX Runtime's native library for the server's machine
+      is downloaded at set-up, the same build Lyrics Sync uses (1.28), so both extensions share one in the process.
+    -->
+    <PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.28.0" />
+    <PackageReference Include="Microsoft.ML.Tokenizers" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="arcanist-extension.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <EmbeddedResource Include="icon.svg" LogicalName="icon.svg" />
+  </ItemGroup>
+
+  <!-- The native libraries of every platform the packages bring are left out (see above). -->
+  <Target Name="LeaveOutNatives" AfterTargets="Build;Publish">
+    <RemoveDir Directories="$(OutDir)runtimes;$(PublishDir)runtimes" />
+  </Target>
+
+</Project>
